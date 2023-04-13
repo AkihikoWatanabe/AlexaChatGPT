@@ -19,15 +19,15 @@ lambda_function.pyのsystem_contentおよびreprompt_textもご自由にご編�
 ※以下はGPT-4に基づいて記述しています。Readmeの最後に元となったpromptを記載します。
 
 ## Step 1: ChatGPT APIキーの取得
-1. OpenAIのWebサイト(https://www.openai.com/)にアクセスし、アカウントを作成またはログインします。
+1. OpenAIのWebサイト (https://www.openai.com/) にアクセスし、アカウントを作成またはログインします。
 2. APIキーを取得するために、ダッシュボードに移動します。キーは後の手順で使用します。
 
 ## Step 2: AWSアカウントの作成と設定
-1. AWSにアクセスし（https://aws.amazon.com/)、アカウントを作成またはログインします。
+1. AWSにアクセスし (https://aws.amazon.com/) 、アカウントを作成またはログインします。
 2. IAM（Identity and Access Management）コンソールに移動し、新しいユーザーを作成して適切な権限を付与します。AWS Lambdaを実行するための権限が必要です。
 
 ## Step 3: AWS Lambda関数の作成
-1. AWS Lambdaコンソール（https://console.aws.amazon.com/lambda/)に移動し、「関数の作成」をクリックします。
+1. AWS Lambdaコンソール (https://console.aws.amazon.com/lambda/) に移動し、「関数の作成」をクリックします。
 2. 「一から作成」を選択し、関数名とランタイム（Python）を入力します。
 3. 作成した関数を選択し、関数コードセクションで「コードのアップロード」をクリックします。
 4. コードをアップロードするためのZIPファイルを作成します。ZIPファイルには、Pythonスクリプト（lambda_function.py）と、必要な依存関係（openaiライブラリなど）を含めます。ZIPファイルをアップロードします。
@@ -41,7 +41,7 @@ pip install -r requirements.txt -t .
 2. ZIPファイルを作成しLambda関数にアップロードします。
 
 ## Step 5: Alexaスキルの作成
-1. Amazon Developer Console（https://developer.amazon.com/)にアクセスし、アカウントを作成またはログインします。
+1. Amazon Developer Console (https://developer.amazon.com/) にアクセスし、アカウントを作成またはログインします。
 2. 「Alexaコンソール」に移動し、「スキルの作成」をクリックします。
 3. スキル名を入力し、「カスタム」モデルを選択します。 ホスティングサービスは「独自のプロビジョニング」とします。スキルの言語も選択し、「スキルの作成」をクリックします。
 4. 「インタラクションモデル」の左側のメニューで、「JSONエディタ」を選択し、以下のインテントスキーマを貼り付けます。これにより、ユーザーが質問をするためのインテントが作成されます。

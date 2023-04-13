@@ -1,55 +1,55 @@
-# 概要
-Amazon EchoやAlexaアプリを通じて、ChatGPTに対して以下のことが実施できるAlexaスキルです。
-1. 質問に対する回答を得ること
-  - シンプルに回答を得る
-  - Zero-shot Chain-of-Thoughtを利用した回答を得る
-  - 特にPromptに工夫なく回答を得る
-2. 日英/英日翻訳を実施すること
+# Overview
+[日本語はこちら](https://github.com/AkihikoWatanabe/AlexaChatGPT/blob/main/readme_jp.md)
 
-Alexaスキルで利用するインタラクションモデルのサンプル発話はご自由にご編集ください。 
-私の例では「エルちゃん」が出てきますが、これは亡くなった私のペットのウサギの名前です。  
+This Alexa skill enables users to interact with ChatGPT via Amazon Echo or the Alexa app to accomplish the following:
+1. Obtain answers to questions
+  - Receive simple answers
+  - Receive answers using Zero-shot Chain-of-Thought
+  - Obtain answers without particularly crafted prompts
+2. Perform Japanese-to-English and English-to-Japanese translations
 
-lambda_function.pyのsystem_contentおよびreprompt_textもご自由にご編集ください。 
-現在のソースでは、system_contentでは「エルちゃん」のキャラクター性が模倣されるようなPromptを考え設定しています。  
+Feel free to edit the sample utterances for the interaction model used in the Alexa skill. In my example, "El-chan" appears, which is the name of my late pet rabbit.
 
-スキルのinvocationNameはニュートンとしていますが、こちらもご自由にご編集ください。 
+You may also freely edit the system_content and reprompt_text in lambda_function.py. In the current source, the character of "El-chan" is emulated by the prompts set for system_content.
 
-# 導入方法
+The invocation name of the skill is set to "Newton," but you may edit this as well.
 
-※以下はGPT-4に基づいて記述しています。Readmeの最後に元となったpromptを記載します。
+# Setup
 
-## Step 1: ChatGPT APIキーの取得
-1. OpenAIのWebサイト(https://www.openai.com/)にアクセスし、アカウントを作成またはログインします。
-2. APIキーを取得するために、ダッシュボードに移動します。キーは後の手順で使用します。
+*Please note that the following instructions are based on GPT-4. The original prompt is provided at the end of the Readme.
 
-## Step 2: AWSアカウントの作成と設定
-1. AWSにアクセスし（https://aws.amazon.com/)、アカウントを作成またはログインします。
-2. IAM（Identity and Access Management）コンソールに移動し、新しいユーザーを作成して適切な権限を付与します。AWS Lambdaを実行するための権限が必要です。
+## Step 1: Obtain ChatGPT API Key
+1. Access the OpenAI website (https://www.openai.com/) and create an account or log in.
+2. Go to the dashboard to obtain an API key, which will be used in later steps.
 
-## Step 3: AWS Lambda関数の作成
-1. AWS Lambdaコンソール（https://console.aws.amazon.com/lambda/)に移動し、「関数の作成」をクリックします。
-2. 「一から作成」を選択し、関数名とランタイム（Python）を入力します。
-3. 作成した関数を選択し、関数コードセクションで「コードのアップロード」をクリックします。
-4. コードをアップロードするためのZIPファイルを作成します。ZIPファイルには、Pythonスクリプト（lambda_function.py）と、必要な依存関係（openaiライブラリなど）を含めます。ZIPファイルをアップロードします。
-5. 環境変数にOPENAI_API_KEYを追加し、取得したChatGPT APIキーを設定します。
+## Step 2: Create and Set Up an AWS Account
+1. Access AWS (https://aws.amazon.com/) and create an account or log in.
+2. Navigate to the IAM (Identity and Access Management) console, create a new user, and grant appropriate permissions. You will need permissions to execute AWS Lambda.
 
-## Step 4: 必要な依存関係のインストール
-1. 下記コマンドで依存関係をインストールします
+## Step 3: Create an AWS Lambda Function
+1. Go to the AWS Lambda console (https://console.aws.amazon.com/lambda/) and click "Create function."
+2. Select "Author from scratch," enter a function name and runtime (Python).
+3. Select the created function, and in the Function code section, click "Upload code."
+4. Create a ZIP file for uploading the code, including the Python script (lambda_function.py) and any required dependencies (such as the openai library). Upload the ZIP file.
+5. Add OPENAI_API_KEY to the environment variables and set the obtained ChatGPT API key.
+
+## Step 4: Install Required Dependencies
+1. Install the dependencies with the following command:
 ```
 pip install -r requirements.txt -t .
 ```
-2. ZIPファイルを作成しLambda関数にアップロードします。
+2. Create a ZIP file and upload it to the Lambda function.
 
-## Step 5: Alexaスキルの作成
-1. Amazon Developer Console（https://developer.amazon.com/)にアクセスし、アカウントを作成またはログインします。
-2. 「Alexaコンソール」に移動し、「スキルの作成」をクリックします。
-3. スキル名を入力し、「カスタム」モデルを選択します。 ホスティングサービスは「独自のプロビジョニング」とします。スキルの言語も選択し、「スキルの作成」をクリックします。
-4. 「インタラクションモデル」の左側のメニューで、「JSONエディタ」を選択し、以下のインテントスキーマを貼り付けます。これにより、ユーザーが質問をするためのインテントが作成されます。
+## Step 5: Create an Alexa Skill
+1. Access the Amazon Developer Console (https://developer.amazon.com/) and create an account or log in.
+2. Go to the "Alexa Console" and click "Create Skill."
+3. Enter a skill name, select the "Custom" model, and choose "Self-hosted" for the hosting service. Also, select the skill language and click "Create Skill."
+4. In the left menu of "Interaction Model," select "JSON Editor" and paste the following intent schema. This creates an intent for users to ask questions.
 ```
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "ニュートン",
+            "invocationName": "Newton",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -76,13 +76,11 @@ pip install -r requirements.txt -t .
                         }
                     ],
                     "samples": [
-                        "ニュートンでインテリエルちゃんに {Prompt} とお願いして",
-                        "インテリエルちゃん {Prompt}",
-                        "{Prompt} ないんですか",
-                        "{Prompt} どうですか",
-                        "{Prompt} ですか",
-                        "{Prompt} 教えて",
-                        "{Prompt} について教えて"
+                        "Ask Intelligent El-chan {Prompt} with Newton",
+                        "Intelligent El-chan {Prompt}",
+                        "How about {Prompt}",
+                        "Tell me about {Prompt}",
+                        "Explain {Prompt}"
                     ]
                 },
                 {
@@ -94,37 +92,8 @@ pip install -r requirements.txt -t .
                         }
                     ],
                     "samples": [
-                        "{Prompt} を英訳して",
-                        "{Prompt} を英語に訳して",
-                        "{Prompt} を英語に翻訳して"
-                    ]
-                },
-                {
-                    "name": "TranslateForKidsIntent",
-                    "slots": [
-                        {
-                            "name": "Prompt",
-                            "type": "AMAZON.SearchQuery"
-                        }
-                    ],
-                    "samples": [
-                        "{Prompt} を子供でもわかるように英訳して",
-                        "{Prompt} を子供でもわかる英語に訳して",
-                        "{Prompt} を子供でもわかる英語に翻訳して"
-                    ]
-                },
-                {
-                    "name": "TranslateForDailyConversation",
-                    "slots": [
-                        {
-                            "name": "Prompt",
-                            "type": "AMAZON.SearchQuery"
-                        }
-                    ],
-                    "samples": [
-                        "{Prompt} を日常会話風に訳して",
-                        "{Prompt} を日常会話風に英語に訳して",
-                        "{Prompt} を日常会話風に英訳して"
+                        "Translate {Prompt} to English",
+                        "Translate {Prompt} into English",
                     ]
                 },
                 {
@@ -136,18 +105,17 @@ pip install -r requirements.txt -t .
                         }
                     ],
                     "samples": [
-                        "{Prompt} を訳して",
-                        "{Prompt} を翻訳して",
-                        "{Prompt} を日本語に翻訳して"
+                        "Translate {Prompt} to Japanese",
+                        "Translate {Prompt} into Japanese"
                     ]
                 },
                 {
                     "name": "ContinueIntent",
                     "slots": [],
                     "samples": [
-                        "続きをお願い",
-                        "続きをお願いします",
-                        "続きを"
+                        "Please continue",
+                        "Please proceed",
+                        "Continue"
                     ]
                 },
                 {
@@ -159,8 +127,8 @@ pip install -r requirements.txt -t .
                         }
                     ],
                     "samples": [
-                        "ニュートンでシンプルエルちゃんに {Prompt} とお願いして",
-                        "シンプルエルちゃん {Prompt}"
+                        "Ask Simple El-chan {Prompt} with Newton",
+                        "Simple El-chan {Prompt}"
                     ]
                 },
                 {
@@ -172,8 +140,8 @@ pip install -r requirements.txt -t .
                         }
                     ],
                     "samples": [
-                        "ニュートンでノーマルエルちゃんに {Prompt} とお願いして",
-                        "ノーマルエルちゃん {Prompt}"
+                        "Ask Normal El-chan {Prompt} with Newton",
+                        "Normal El-chan {Prompt}"
                     ]
                 }
             ],
@@ -182,51 +150,51 @@ pip install -r requirements.txt -t .
     }
 }
 ```
-4. 「ビルド」タブをクリックして、インタラクションモデルをビルドします。
+4. Click the "Build" tab to build the interaction model.
 
-## Step 7: エンドポイントの設定
-1. Alexaスキルで「エンドポイント」を選択し、AWS Lambda ARN（Amazon Resource Name）を入力します。これは、Step 3で作成したLambda関数のARNです。
-2. スキルIDをコピーし、Lambda関数のトリガーに追加します。これにより、Lambda関数がAlexaスキルから呼び出されるようになります。
+## Step 7: Configuring the Endpoint
+1. In your Alexa skill, select "Endpoint" and input the AWS Lambda ARN (Amazon Resource Name). This is the ARN of the Lambda function you created in Step 3.
+2. Copy the Skill ID and add it to the Lambda function's triggers. This will enable the Lambda function to be invoked from your Alexa skill.
 
-## Step 8: スキルのテスト
-1. Alexa Developer Consoleの「テスト」タブを選択し、スキルを有効化します。
-2. テストページの左側のメニューで、「デバイスディスプレイ」を選択し、テストリクエストを入力します。例: "ニュートンでインテリエルちゃんにおいしいビールの銘柄について教えてとお願いして"
-3. 正しい応答が表示されることを確認します。
-4. これで、AlexaでChatGPTを使用する設定が完了しました。ユーザーは、スキルを使ってChatGPTに質問を投げかけ、応答を受け取ることができます。
+## Step 8: Testing the Skill
+1. Select the "Test" tab in the Alexa Developer Console and enable the skill.
+2. In the test page's left menu, select "Device Display" and enter a test request. 
+3. Confirm that the correct response is displayed.
+4. With this, the setup to use ChatGPT in Alexa is complete. Users can now ask questions to ChatGPT through the skill and receive responses.
 
-## Step 9: スキルのAmazon Echoでの利用
-1. 現在私はベータテスターとして自宅のAmazon EchoやAlexaアプリにスキルをインストールし利用しています。
-2. ベータテストは3ヶ月間しか有効でないため、もし他に良い方法があれば、教えて欲しいです。
+## Step 9: Using the Skill on Amazon Echo
+1. I am currently using the skill as a beta tester on my home Amazon Echo and Alexa app.
+2. As beta testing is only valid for 3 months, if there are better alternatives, I would appreciate any suggestions.
 
-## Step 10: 各サービスに対する利用料の上限値の設定（必要であれば）
-1. OpenAIのAPIの利用上限値の設定やAWSのBudgetsの設定等を行い、自分の予算感にあった金額で運用できるようにしています。
+## Step 10: Setting Usage Limitations for Each Service (if necessary)
+1. I have set up usage limitations for OpenAI's API and configured AWS Budgets to operate within my budget constraints.
 
-## 導入方法の作成に利用したprompt
+## Prompt used to create the setup instructions
 ```
-AlexaでChatGPTを使用できるようにしたいと考えています。以下のサービスを使用する前提です。
+I want to use ChatGPT on Alexa. I plan to use the following services:
 - ChatGPT API
-- Alexaスキル
+- Alexa Skill
 - AWS Lambda
-これを実現するための方法をstep-by-stepで説明してください。
+
+Please explain step-by-step how to achieve this.
 ```
 
-# 利用方法
-- スキルを起動してから質問を投げる
-  1. アレクサ、ニュートンを起動して
-  2.1 {インテリ, シンプル, ノーマル}エルちゃん、おいしいビールの銘柄について教えて
-  2.2 hogehogeを英訳して
-- インテントを直接起動して質問を投げる
-  1. アレクサ、ニュートンで{インテリ, シンプル, ノーマル}エルちゃんに「おいしいビールの銘柄について教えて」とお願いして
-- 回答が途中で途切れた場合
-  - 「続きを」というと、回答の続きを答えてくれます。
+# How to Use
+- Launch the skill and ask a question
+  1. Alexa, launch Newton 
+  2. {Intelligent, Simple, Normal} El-chan, tell me about delicious beer brands or Translate hogehoge to English/Japanese
+- Directly launch the intent and ask a question
+  1. Alexa, ask {Intelligent, Simple, Normal} El-chan in Newton about "delicious beer brands"
+- If the answer is cut off halfway
+  - If you say "Continue," the response will continue.
 
-# Limitation
-- Alexaの発話の受付時間
-  - Alexaのユーザの発話の受付時間が8秒しかないため、あまり長い質問をすると、途中で受付が終わってしまいます。
-  - 何かよい改善方法を知っていましたら、教えてもらえると嬉しいです。
-- 回答が途中で終わってしまった場合
-  - 「続きを」と発話することで続きの回答を教えてくれますが、冒頭に謝罪などが入ったり、きちんと続きを話してくれないことがあります。
-  - iPhoneのAlexaアプリだと完璧に続きを話してくれますが、Android, Amazon Echoだとなぜかうまくいきません。
-  - もし何か良い知恵がありましたら、教えてもらえると嬉しいです。
+# Limitations
+- Alexa's speech recognition time
+  - Alexa only recognizes user speech for 8 seconds, so if your question is too long, the recognition may end prematurely.
+  - If you know any good solutions to improve this, I would be grateful for your advice.
+- If the answer ends abruptly
+  - Saying "Continue" will prompt a continuation of the response, but it may not seamlessly continue or may start with an apology.
+  - The iPhone's Alexa app perfectly continues the response, but for some reason, it doesn't work well on Android or Amazon Echo.
+  - If you have any helpful tips, I would appreciate your advice.
 
-良いChatGPTライフを！
+Enjoy your ChatGPT life!

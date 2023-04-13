@@ -45,6 +45,7 @@ pip install -r requirements.txt -t .
 2. Go to the "Alexa Console" and click "Create Skill."
 3. Enter a skill name, select the "Custom" model, and choose "Self-hosted" for the hosting service. Also, select the skill language and click "Create Skill."
 4. In the left menu of "Interaction Model," select "JSON Editor" and paste the following intent schema. This creates an intent for users to ask questions.
+=======
 ```
 {
     "interactionModel": {

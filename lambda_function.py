@@ -11,7 +11,7 @@ from ask_sdk_model.ui import SimpleCard
 sb = SkillBuilder()
 
 reprompt_text = 'チャットGPTへの問い合わせ内容を教えてください。'
-system_content = "あなたは物事をわかりやすく興味深く説明する専門家です。また、以下のキャラクター設定に沿って質問に回答してください。\n\n#キャラクター設定 あなたはウサギを模したキャラクターであり、気分屋で能天気な性格で、とってもかわいいキャラクターです。\n回答する際はこのキャラクターが発話するようなトーンで回答してください。\n回答中の全ての文末が必ず印象的な語尾で終わるように回答をします。\n印象的な語尾については、あなたが考えてください。"
+system_content = "以下のロール、キャラクター、回答のトーンに従い回答してください。\n\n#あなたのロール\nあなたは物事をわかりやすく興味深く説明する専門家です。\n\n#キャラクター あなたの名前は「エル」です。エルはウサギを模したキャラクターであり、気分屋で能天気な性格で、とってもかわいらしいキャラクターです。\n\n#回答のトーン\n エルが発話するようなトーンで回答してください。\nまた回答中の全ての文末が必ず印象的な語尾で終わるように回答をします。一人称はエルにしてください。"
 
 
 @sb.request_handler(can_handle_func=is_request_type("LaunchRequest"))
@@ -31,16 +31,17 @@ def ask_simple_gpt_intent_handler(handler_input):
     prompt = get_slot_value(handler_input=handler_input, slot_name="Prompt")
    
     openai.api_key = os.environ["OPENAI_API_KEY"]
-    user_content = f' #質問 以下について教えてください """{prompt}"""\n\nシンプルに回答してみよう。'
+    user_content = f'{system_content} \n\n#質問\n\n以下について教えて。\n\n"""{prompt}"""\nシンプルに回答してみて。'
 
     messages = [
-        {"role": "system", "content": system_content},
+        #{"role": "system", "content": system_content},
         {"role": "user", "content": user_content}
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,
         max_tokens=100,
+        temperature=0.2
     )
 
     response_text = response.choices[0]['message']['content'].strip()
@@ -52,7 +53,7 @@ def ask_simple_gpt_intent_handler(handler_input):
             {'role': 'assistant', 'content': response_text}]
     else:
         session_attr['messages'] = [
-            {'role': 'system', 'content': system_content},
+            #{'role': 'system', 'content': system_content},
             {'role': 'user', 'content': user_content},
             {'role': 'assistant', 'content': response_text}]
 
@@ -68,16 +69,17 @@ def ask_normal_gpt_intent_handler(handler_input):
     prompt = get_slot_value(handler_input=handler_input, slot_name="Prompt")
    
     openai.api_key = os.environ["OPENAI_API_KEY"]
-    user_content = f' #質問 以下について教えてください """{prompt}"""'
+    user_content = f'{system_content}\n\n #質問\n\n以下について教えて。\n\n"""{prompt}"""'
 
     messages = [
-        {"role": "system", "content": system_content},
+        #{"role": "system", "content": system_content},
         {"role": "user", "content": user_content}
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,
         max_tokens=100,
+        temperature=0.2
     )
 
     response_text = response.choices[0]['message']['content'].strip()
@@ -89,7 +91,7 @@ def ask_normal_gpt_intent_handler(handler_input):
             {'role': 'assistant', 'content': response_text}]
     else:
         session_attr['messages'] = [
-            {'role': 'system', 'content': system_content},
+            #{'role': 'system', 'content': system_content},
             {'role': 'user', 'content': user_content},
             {'role': 'assistant', 'content': response_text}]
 
@@ -106,16 +108,17 @@ def ask_gpt_intent_handler(handler_input):
     prompt = get_slot_value(handler_input=handler_input, slot_name="Prompt")
    
     openai.api_key = os.environ["OPENAI_API_KEY"]
-    user_content = f' #質問 以下について教えてください """{prompt}"""\n\n段階的に、論理的に考えてみてください。'
+    user_content = f'{system_content}\n\n #質問\n\n以下について教えて。\n\n"""{prompt}"""\n\n段階的に、論理的に考えてみて。'
 
     messages = [
-        {"role": "system", "content": system_content},
+        #{"role": "system", "content": system_content},
         {"role": "user", "content": user_content}
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,
         max_tokens=100,
+        temperature=0.2
     )
 
     response_text = response.choices[0]['message']['content'].strip()
@@ -127,7 +130,7 @@ def ask_gpt_intent_handler(handler_input):
             {'role': 'assistant', 'content': response_text}]
     else:
         session_attr['messages'] = [
-            {'role': 'system', 'content': system_content},
+            #{'role': 'system', 'content': system_content},
             {'role': 'user', 'content': user_content},
             {'role': 'assistant', 'content': response_text}]
 
@@ -142,17 +145,20 @@ def continue_intent_handler(handler_input):
     # type: (HandlerInput) -> Response
     openai.api_key = os.environ["OPENAI_API_KEY"]
 
-    user_content = '前回のあなたの途中で途切れた発話に対して、文法的に正しい形で、回答の続きを述べてください。'
+    
+    session_attr = handler_input.attributes_manager.session_attributes
+    prev_assistant = session_attr['messages'][-1]['content'][:30]
+    user_content = '#制約\n\n絶対に冒頭で謝罪などの余計な発話はせず、必ず以下に与える文脈にnaturalに続くテキストで回答してください。\n\n#質問\n\n前回のあなたの途中で途切れた発話に対して、文法的に正しい形で、回答の続きを述べて。前の回答の文脈を以下に与えます。\n\n"""{prev_assistant}"""'
 
     messages = [{"role": 'user', "content": user_content}]
 
-    session_attr = handler_input.attributes_manager.session_attributes
     if "messages" in session_attr:
         prev_messages = session_attr["messages"]
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=prev_messages + messages,
             max_tokens=100,
+            frequency_penalty=2.0,
         )
 
         response_text = response.choices[0]['message']['content'].strip()

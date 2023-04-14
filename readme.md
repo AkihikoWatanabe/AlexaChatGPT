@@ -198,4 +198,10 @@ Please explain step-by-step how to achieve this.
   - The iPhone's Alexa app perfectly continues the response, but for some reason, it doesn't work well on Android or Amazon Echo.
   - If you have any helpful tips, I would appreciate your advice.
 
+# Example
+## シンプルエルちゃん
+![image](https://user-images.githubusercontent.com/12249301/231931147-c20f352d-4ff1-40cf-afdd-a7375ff4bc2e.png)
+## インテリエルちゃん
+![image](https://user-images.githubusercontent.com/12249301/231930862-05d00abd-34b2-465f-86d4-107a6cdb6923.png)
+
 Enjoy your ChatGPT life!

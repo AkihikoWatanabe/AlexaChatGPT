@@ -31,7 +31,7 @@ def ask_simple_gpt_intent_handler(handler_input):
     prompt = get_slot_value(handler_input=handler_input, slot_name="Prompt")
    
     openai.api_key = os.environ["OPENAI_API_KEY"]
-    user_content = f' #質問 以下について教えてください """{prompt} シンプルに回答してみよう。"""'
+    user_content = f' #質問 以下について教えてください """{prompt}"""\n\nシンプルに回答してみよう。'
 
     messages = [
         {"role": "system", "content": system_content},
@@ -106,7 +106,7 @@ def ask_gpt_intent_handler(handler_input):
     prompt = get_slot_value(handler_input=handler_input, slot_name="Prompt")
    
     openai.api_key = os.environ["OPENAI_API_KEY"]
-    user_content = f' #質問 以下について教えてください """{prompt}。段階的に、論理的に考えてみてください。'
+    user_content = f' #質問 以下について教えてください """{prompt}"""\n\n段階的に、論理的に考えてみてください。'
 
     messages = [
         {"role": "system", "content": system_content},
@@ -142,7 +142,7 @@ def continue_intent_handler(handler_input):
     # type: (HandlerInput) -> Response
     openai.api_key = os.environ["OPENAI_API_KEY"]
 
-    user_content = '前回のあなたの途中で途切れた発話に対して文法的に正しい形で、回答の続きを述べてください。'
+    user_content = '前回のあなたの途中で途切れた発話に対して、文法的に正しい形で、回答の続きを述べてください。'
 
     messages = [{"role": 'user', "content": user_content}]
 

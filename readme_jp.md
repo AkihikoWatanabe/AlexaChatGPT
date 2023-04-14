@@ -202,4 +202,10 @@ AlexaでChatGPTを使用できるようにしたいと考えています。以�
   - iPhoneのAlexaアプリだと完璧に続きを話してくれますが、Android, Amazon Echoだとなぜかうまくいきません。
   - もし何か良い知恵がありましたら、教えてもらえると嬉しいです。
 
+# Example
+## シンプルエルちゃん
+![image](https://user-images.githubusercontent.com/12249301/231931147-c20f352d-4ff1-40cf-afdd-a7375ff4bc2e.png)
+## インテリエルちゃん
+![image](https://user-images.githubusercontent.com/12249301/231930862-05d00abd-34b2-465f-86d4-107a6cdb6923.png)
+
 良いChatGPTライフを！

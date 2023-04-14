@@ -194,9 +194,10 @@ Please explain step-by-step how to achieve this.
   - Alexa only recognizes user speech for 8 seconds, so if your question is too long, the recognition may end prematurely.
   - If you know any good solutions to improve this, I would be grateful for your advice.
 - If the answer ends abruptly
-  - Saying "Continue" will prompt a continuation of the response, but it may not seamlessly continue or may start with an apology.
-  - The iPhone's Alexa app perfectly continues the response, but for some reason, it doesn't work well on Android or Amazon Echo.
-  - If you have any helpful tips, I would appreciate your advice.
+  - ~~Saying "Continue" will prompt a continuation of the response, but it may not seamlessly continue or may start with an apology.~~
+  - ~~The iPhone's Alexa app perfectly continues the response, but for some reason, it doesn't work well on Android or Amazon Echo.~~
+  - ~~If you have any helpful tips, I would appreciate your advice.~~
+  - Adding context explicitly in the prompt improved it.
 
 # Example
 ## Simple El-chan
